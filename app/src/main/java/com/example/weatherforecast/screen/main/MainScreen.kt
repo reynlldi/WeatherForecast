@@ -1,6 +1,5 @@
 package com.example.weatherforecast.screen.main
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -32,6 +31,7 @@ import com.example.weatherforecast.data.DataOrException
 import com.example.weatherforecast.model.Weather
 import com.example.weatherforecast.model.WeatherItem
 import com.example.weatherforecast.navigation.Screen
+import com.example.weatherforecast.screen.empty.EmptyScreen
 import com.example.weatherforecast.utils.formatDate
 import com.example.weatherforecast.utils.formatDecimal
 import com.example.weatherforecast.widget.HumidityWindPressureRow
@@ -56,6 +56,8 @@ fun MainScreen(
         CircularProgressIndicator()
     } else if (weatherData.data != null) {
         MainScaffold(weather = weatherData.data!!, navController = navController)
+    }else{
+        EmptyScreen(navController = navController)
     }
 }
 
