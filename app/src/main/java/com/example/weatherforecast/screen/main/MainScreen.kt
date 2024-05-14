@@ -31,6 +31,7 @@ import androidx.navigation.NavController
 import com.example.weatherforecast.data.DataOrException
 import com.example.weatherforecast.model.Weather
 import com.example.weatherforecast.model.WeatherItem
+import com.example.weatherforecast.navigation.Screen
 import com.example.weatherforecast.utils.formatDate
 import com.example.weatherforecast.utils.formatDecimal
 import com.example.weatherforecast.widget.HumidityWindPressureRow
@@ -42,12 +43,13 @@ import com.example.weatherforecast.widget.WeatherStateImage
 @Composable
 fun MainScreen(
     navController: NavController,
-    mainViewModel: MainViewModel = hiltViewModel()
+    mainViewModel: MainViewModel = hiltViewModel(),
+    city: String?
 ) {
     val weatherData = produceState<DataOrException<Weather, Boolean, Exception>>(
         initialValue = DataOrException(loading = true)
     ) {
-        value = mainViewModel.getWeatherData(city = "jakarta")
+        value = mainViewModel.getWeatherData(city = city.toString())
     }.value
 
     if (weatherData.loading == true) {
@@ -63,10 +65,11 @@ fun MainScaffold(weather: Weather, navController: NavController) {
         topBar = {
             WeatherAppBar(
                 title = weather.city.name + ",${weather.city.country}",
+                onAddActionClicked = {
+                    navController.navigate(Screen.SearchScreen.name)
+                },
                 navController = navController
-            ) {
-                Log.d("TAG", "MainScaffold: Button CLicked")
-            }
+            )
         }
     ) { paddingValues ->
         Surface(
